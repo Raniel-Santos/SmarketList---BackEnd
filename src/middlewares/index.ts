@@ -20,13 +20,15 @@ export const authorization = async (req: Request, res: Response, next: NextFunct
         // autorização no formato Bearer token
         const [,token] = authorization.split(" ");
         // valida o token
+        console.log(token);
+        
         const decoded = <any>jwt.verify(token, process.env.JWT_SECRET);
         if( !decoded ){
             res.status(401).json({error:"Não autorizado"});
         }
         else{
             // passa os dados pelo res.locals para o próximo nível da middleware
-            res.locals = decoded;
+            res.locals.jwtpayload = decoded;
         }
     } catch (error) {
         // o toke não é válido, a resposta com HTTP Method 401 (unauthorized)

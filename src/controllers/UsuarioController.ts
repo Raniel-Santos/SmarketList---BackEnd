@@ -12,11 +12,38 @@ class UsuarioController{
         }
     }
 
-    public async buscarUsuario(req: Request, res: Response){
+    public async buscarUsuarioById(req: Request, res: Response){
         try{
             const usuario = await Usuario.findById(req.params.id, '-__v');
             if(usuario){
                 res.status(200).json(usuario);
+            }else{
+                res.status(404).json({message: `usuario ${req.params.id} não encontrado....`});
+            }
+        }catch(error){
+            res.status(500).json({message:error});
+        }
+    }
+
+    public async buscarUsuario(req: Request, res: Response){
+        try{
+            const usuario = await Usuario.find({});
+            if(usuario){
+                res.status(200).json(usuario);
+            }else{
+                res.status(404).json({message: `usuario ${req.params.id} não encontrado....`});
+            }
+        }catch(error){
+            res.status(500).json({message:error});
+        }
+    }
+
+    public async buscarListasUsuario(req: Request, res: Response){
+        try{
+            const id_usuario = res.locals.jwtpayload._id
+            const usuario = await Usuario.findById(id_usuario, '-__v').populate('listas').exec();
+            if(usuario){
+                res.status(200).json(usuario.listas);
             }else{
                 res.status(404).json({message: `usuario ${req.params.id} não encontrado....`});
             }

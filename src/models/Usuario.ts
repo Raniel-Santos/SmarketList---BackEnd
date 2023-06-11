@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Lista from "./Lista";
 
 const { Schema } = mongoose;
 
@@ -10,7 +11,13 @@ const usuario = new Schema({
         type: String,
         enum: ['admin', 'usuario'],
         default: 'usuario'
-    }
+    },
+    listas:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: Lista
+        }
+    ]
 });
 const Usuario = mongoose.model('usuarios', usuario);
 

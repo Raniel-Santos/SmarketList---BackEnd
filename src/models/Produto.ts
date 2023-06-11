@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { iCategoria } from "./Categoria";
 const { Schema } = mongoose;
 
+export interface iProduto extends Document{
+    _id: ObjectId,
+    nome: String,
+    quantidade: Number,
+
+    checked: Boolean
+}
 const produtos = new Schema({
     nome:{
         type: String,
@@ -10,13 +18,12 @@ const produtos = new Schema({
         type: Number,
         default: 1
     },
-    categoria:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref: 'Categoria',
-        required: true
+    checked:{
+        type:Boolean,
+        default: false
     }
 });
 
-const Produto = mongoose.model('Produto', produtos)
+const Produto = mongoose.model<iProduto>('Produto', produtos)
 
 export default Produto;

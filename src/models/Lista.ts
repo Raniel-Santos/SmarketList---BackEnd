@@ -9,14 +9,14 @@ const lista = new Schema({
     },
     status:{
         type:String,
-        enum:['desativada', 'ativa', 'finalizada'],
+        enum:['ativa', 'finalizada'],
         default: 'ativa'
     },
-    produtos:{
+    produtos:[{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Produto',
         required: true
-    }    
+    }]    
 });
 
 const Lista = mongoose.model('Lista', lista)

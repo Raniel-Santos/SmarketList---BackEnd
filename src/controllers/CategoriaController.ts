@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Categoria from "../models/Categoria";
+import Produto from "../models/Produto";
 
 
 class CategoriaController{
@@ -12,7 +13,24 @@ class CategoriaController{
         }
     }
 
+
     public async buscarCategoria(req: Request, res: Response){
+        try{
+            const categorias = await Categoria.find().populate("produtos").exec();
+            if(categorias){
+                                
+                res.status(200).json(categorias);
+            }else{
+                res.status(404).json({message: `categoria ${req.params.id} não encontrada...`});
+            }
+        }catch(error){
+            console.log(error);
+            
+            res.status(500).json({message:error});
+        }
+    }
+
+    public async buscarCategoriaPorId(req: Request, res: Response){
         try{
             const categoria = await Categoria.findById(req.params.id, '-__v)');
             if(categoria){
